@@ -1,0 +1,64 @@
+/*
+ * See link below for more information:
+ * https://3.basecamp.com/3576524/buckets/2650597/todos/619920249
+ */
+@import '~@/assets/fonts/ConquerorSans/ConquerorSans';
+
+// Indentation of workfield
+
+$workfield-width: 960px;
+$workfield-height: 600px;
+
+$indent-top: 32px;
+$indent-bottom: 44px;
+$indent-side: 24px;
+
+$indented-width: $workfield-width - 2 * $indent-side;
+$indented-heigth: $workfield-height - $indent-top - $indent-bottom;
+
+@mixin workfieldStyle {
+  width: $workfield-width;
+  height: $workfield-height;
+}
+
+@mixin innerWorkfieldZoneStyle {
+  width: $indented-width;
+  height: $indented-heigth;
+  margin: $indent-top $indent-side $indent-bottom;
+}
+
+// Color defines
+
+$trap-clr: #f9f9f9;
+$inactive-outline-clr: #f0f0f0;
+$inactive-element-clr: #d8dad4;
+$tooltip-text-clr: #777777;
+$text-clr: #2d2d2d;
+$main-clr: #4ecdc4;
+$danger-clr: #ff6b6b; // Additional color #1
+$warning-clr: #ffe66c; // Additional color #2
+$correct-clr: #4ecdc4;
+$error-clr: #f16746;
+
+// Aditional colors (?)
+// TODO: Divide this style config for default and ENV* tasks
+$label-main-clr: #00a095;
+$label-correct-outline-clr: #24ddd0;
+$correct-text-clr: #13ebdc;
+
+
+// Text and font styles
+
+
+@mixin headerText     {font: 28px/32px ConquerorSansExtraBold, sans-serif;}
+// Corrected for better view
+@mixin subheaderText  {font: 23px/28px ConquerorSans, sans-serif;}
+
+@mixin normalText     {font: 17px/24px "Open Sans", sans-serif;}
+@mixin windowText     {font: 17px/22px "Open Sans", sans-serif;}
+@mixin normalIText    {font: 17px/36px "Open Sans", sans-serif;}
+@mixin buttonText     {font: 15px/20px "Open Sans", sans-serif;}
+
+
+
+

@@ -1,0 +1,109 @@
+$font-path: '~@/assets/fonts/ConquerorSans/';
+
+@font-face {
+	font-family: 'ConquerorSans';
+	src: url($font-path + 'ConquerorSans.eot');
+	src:
+	     url($font-path + 'ConquerorSans.eot?#iefix') format('embedded-opentype'),
+	     url($font-path + 'ConquerorSans.woff') format('woff'),
+	     url($font-path + 'ConquerorSans.ttf') format('truetype'),
+	     url($font-path + 'ConquerorSans.svg#ConquerorSans') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+  font-family: 'ConquerorSansBold';
+  src: url($font-path + 'ConquerorSans-Bold.eot');
+  src:
+    url($font-path + 'ConquerorSans-Bold.eot?#iefix') format('embedded-opentype'),
+    url($font-path + 'ConquerorSans-Bold.woff') format('woff'),
+    url($font-path + 'ConquerorSans-Bold.ttf') format('truetype'),
+    url($font-path + 'ConquerorSans-Bold.svg#ConquerorSans-Bold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ConquerorSansExtraBold';
+  src: url($font-path + 'ConquerorSans-ExtraBold.eot');
+  src:
+    url($font-path + 'ConquerorSans-ExtraBold.eot?#iefix') format('embedded-opentype'),
+    url($font-path + 'ConquerorSans-ExtraBold.woff') format('woff'),
+    url($font-path + 'ConquerorSans-ExtraBold.ttf') format('truetype'),
+    url($font-path + 'ConquerorSans-ExtraBold.svg#ConquerorSansExtraBold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ConquerorSansExtraBoldItalic';
+  src: url($font-path + 'ConquerorSans-ExtraBoldItalic.eot');
+  src:
+    url($font-path + 'ConquerorSans-ExtraBoldItalic.eot?#iefix') format('embedded-opentype'),
+    url($font-path + 'ConquerorSans-ExtraBoldItalic.woff') format('woff'),
+    url($font-path + 'ConquerorSans-ExtraBoldItalic.ttf') format('truetype'),
+    url($font-path + 'ConquerorSans-ExtraBoldItalic.svg#ConquerorSansExtraBold-Italic') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ConquerorSansItalic';
+  src: url($font-path + 'ConquerorSans-Italic.eot');
+  src:
+    url($font-path + 'ConquerorSans-Italic.eot?#iefix') format('embedded-opentype'),
+    url($font-path + 'ConquerorSans-Italic.woff') format('woff'),
+    url($font-path + 'ConquerorSans-Italic.ttf') format('truetype'),
+    url($font-path + 'ConquerorSans-Italic.svg#ConquerorSans-Italic') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ConquerorSansLight';
+  src: url($font-path + 'ConquerorSans-Light.eot');
+  src:
+    url($font-path + 'ConquerorSans-Light.eot?#iefix') format('embedded-opentype'),
+    url($font-path + 'ConquerorSans-Light.woff') format('woff'),
+    url($font-path + 'ConquerorSans-Light.ttf') format('truetype'),
+    url($font-path + 'ConquerorSans-Light.svg#ConquerorSansLight') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ConquerorSansSemiBold';
+  src: url($font-path + 'ConquerorSans-SemiBold.eot');
+  src:
+    url($font-path + 'ConquerorSans-SemiBold.eot?#iefix') format('embedded-opentype'),
+    url($font-path + 'ConquerorSans-SemiBold.woff') format('woff'),
+    url($font-path + 'ConquerorSans-SemiBold.ttf') format('truetype'),
+    url($font-path + 'ConquerorSans-SemiBold.svg#ConquerorSansSemiBold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ConquerorSansSemiBoldItalic';
+  src: url($font-path + 'ConquerorSans-SemiBoldItalic.eot');
+  src:
+    url($font-path + 'ConquerorSans-SemiBoldItalic.eot?#iefix') format('embedded-opentype'),
+    url($font-path + 'ConquerorSans-SemiBoldItalic.woff') format('woff'),
+    url($font-path + 'ConquerorSans-SemiBoldItalic.ttf') format('truetype'),
+    url($font-path + 'ConquerorSans-SemiBoldItalic.svg#ConquerorSansSemiBold-Italic') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ConquerorSansUltraLight';
+  src: url($font-path + 'ConquerorSans-ULight.eot');
+  src:
+    url($font-path + 'ConquerorSans-ULight.eot?#iefix') format('embedded-opentype'),
+    url($font-path + 'ConquerorSans-ULight.woff') format('woff'),
+    url($font-path + 'ConquerorSans-ULight.ttf') format('truetype'),
+    url($font-path + 'ConquerorSans-ULight.svg#ConquerorSans-UltraLight') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

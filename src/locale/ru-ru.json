@@ -1,0 +1,110 @@
+{
+  "header": "Движения окружности,<br>сохраняющие правильный треугольник.",
+  "buttons": {
+    "yes": {
+      "text": "Да"
+    },
+    "no": {
+      "type": "danger",
+      "text": "Нет"
+    },
+    "continue": {
+      "text": "Продолжить"
+    },
+    "validate": {
+      "text": "Проверить"
+    },
+    "tip": {
+      "type": "danger",
+      "text": "Подсказка"
+    }
+  },
+  "modalWindows": {
+    "restartRequested": {
+      "message": "Начать задание заново?",
+      "buttons": ["yes", "no"]
+    },
+    "validationPassed": {
+      "message": "Все правильно",
+      "buttons": ["continue"]
+    },
+    "validationFail": {
+      "message": "Что-то не так! Попробуй еще раз.",
+      "buttons": ["continue"]
+    },
+    "tipRequest": {
+      "message": "",
+      "closable": true
+    }
+  },
+  "steps": {
+    "count": 2,
+    "data": [
+      {
+        "header": "Перечислите все движения окружности,<br>сохраняющие правильный треугольник.",
+        "buttons": ["validate"],
+        "questions": {
+          "showIndex": true,
+          "data": [
+            {"text": "Сколько градусов составляет этот угол?"},
+            {"text": "Перечислите повороты:"},
+            {"text": "Перечислите отражения:"}
+          ]
+        },
+        "answers": {
+          "data": [
+            {
+              "prefix": "",
+              "postfix": "",
+              "position": "normal",
+              "correctValues": [120]
+            },
+            {
+              "prefix": "",
+              "postfix": "",
+              "position": "subscript",
+              "correctValues": [120, 240, 360]
+            },
+            {
+              "prefix": "",
+              "postfix": "",
+              "position": "subscript",
+              "correctValues": ["a", "b", "c"]
+            }
+          ]
+        }
+      },
+      {
+        "header": "Заполните таблицу композиций<br>подгруппы<br>G = {R<sub>120°</sub>, R<sub>240°</sub> ,R<sub>360°</sub>=Id, S<sub>a</sub>, S<sub>b</sub>, S<sub>c</sub>}.",
+        "buttons": [
+          {"text": "Подсказка", "type": "danger"},
+          {"text": "Проверить"}
+        ],
+        "tip": "Подсказка: так как G — конечная подгруппа, композиция любых элементов из G также является элементом G",
+        "labels": [
+          "R<sub>120°</sub>",
+          "R<sub>240°</sub>",
+          "R<sub>360°</sub>=Id",
+          "S<sub>a</sub>",
+          "S<sub>b</sub>",
+          "S<sub>c</sub>"
+        ],
+        "correct": [
+          [1, 2, 0, 5, 3, 4],
+          [2, 0, 1, 4, 5, 3],
+          [0, 1, 2, 3, 4, 5],
+          [5, 4, 3, 2, 0, 1],
+          [3, 5, 4, 1, 2, 0],
+          [4, 3, 5, 0, 1, 2]
+        ]
+      }
+    ]
+  },
+  "window": {
+    "modal": [
+      {
+        "text": "Помните, что движения выполняются справа налево"
+      }
+    ]
+  }
+}
