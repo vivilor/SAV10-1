@@ -54,20 +54,18 @@
         "answers": {
           "data": [
             {
-              "prefix": "",
-              "postfix": "",
+              "postfix": "°",
               "position": "normal",
               "correctValues": [120]
             },
             {
-              "prefix": "",
-              "postfix": "",
+              "prefix": "R",
+              "postfix": "°",
               "position": "subscript",
               "correctValues": [120, 240, 360]
             },
             {
-              "prefix": "",
-              "postfix": "",
+              "prefix": "S",
               "position": "subscript",
               "correctValues": ["a", "b", "c"]
             }

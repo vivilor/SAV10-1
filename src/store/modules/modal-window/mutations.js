@@ -1,11 +1,8 @@
-export const ModalWindowMutations = {
-  hide: 'hide',
-  show: 'show',
-  setType: 'set-type'
-}
+/* eslint-disable no-return-assign */
+const SHOW = state => state.visible = true
+const HIDE = state => state.visible = false
+const SET_TYPE = (state, newType) => state.currentType = newType
 
-export default {
-  [ModalWindowMutations.show] (state) { state.visible = true },
-  [ModalWindowMutations.hide] (state) { state.visible = false },
-  [ModalWindowMutations.setType] (state, newType) { state.currentType = newType }
+export {
+  SHOW, HIDE, SET_TYPE
 }

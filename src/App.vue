@@ -18,28 +18,20 @@ import StepHeader from '@/components/widgets/StepHeader'
 import StaticBackground from '@/components/StaticBackground'
 import RestartButton from '@/components/widgets/RestartButton/RestartButton'
 import ModalWindow from '@/components/widgets/ModalWindow'
-import { retrieveKeysArray } from '@/utils'
-import { createNamespacedHelpers } from 'vuex'
 
-import { mapMutations, mapState, mapGetters } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
-/**
- * Importing module 'global'
- */
-import { GlobalMutations } from '@/store/modules/global/mutations'
-import { ModalWindowMutations } from '@/store/modules/modal-window/mutations'
-
-const global = createNamespacedHelpers('global')
-const modalWindow = createNamespacedHelpers('modalWindow')
+const modalWindowModuleName = 'modalWindow'
+const globalModuleName = 'global'
 
 export default {
   name: 'App',
   components: {
+    StepsBar,
+    StepHeader,
     ModalWindow,
     RestartButton,
     StaticBackground,
-    StepsBar,
-    StepHeader,
     TaskHeader
   },
   data () {
@@ -48,23 +40,27 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-    
+    ...mapState(modalWindowModuleName, {
+      currentModalType: 'currentType',
+      lastModalButtonClicked: 'lastButton'
     })
   },
   methods: {
     /**
      * Mapping mutations
      */
-    ...mapMutations({
-      showModalWindow: 'modalWindow/' + ModalWindowMutations.show,
-      hideModalWindow: 'modalWindow/' + ModalWindowMutations.hide,
-      setModalWindowType: 'modalWindow/' + ModalWindowMutations.setType
+    ...mapMutations(modalWindowModuleName, {
+      showModal: 'SHOW',
+      hideModal: 'HIDE',
+      setModalType: 'SET_TYPE'
     }),
-    ...mapMutations({
-      changeStep: 'global/' + GlobalMutations.step.change,
-      stepToStart: 'global/' + GlobalMutations.step.toStart,
-      increaseStep: 'global/' + GlobalMutations.step.increase
+    ...mapMutations(globalModuleName, {
+      changeStep: 'CHANGE_STEP',
+      goToStartStep: 'GO_TO_START_STEP',
+      increaseStep: 'INCREASE_STEP'
+    }),
+    ...mapActions(modalWindowModuleName, {
+      setAndShowModal: 'setAndShowModal'
     }),
 
     /**
@@ -79,22 +75,29 @@ export default {
      * @event: restart-request
      * @component: RestartButton
      */
-    onRestartRequest () {},
+    onRestartRequest () {
+      this.setAndShowModal('restartRequested')
+    },
 
     onModalWindowClick () {
-      // switch (this.currentModalWindowName) {
-      //   case 'restartRequested':
-      //     switch (this.lastModalWindowButtonClicked) {
-      //       case 'yes': this.setStepToStart(); break
-      //       default: this.hideModalWindow(); break
-      //     }
-      //     break
-      //   case 'validationPass':
-      //     this.hideModalWindow()
-      //     break
-      //   case 'validationFail':
-      //     // TODO: Add reseting mutation for step component
-      //     break
+      switch (this.currentModalType) {
+        case 'restartRequested':
+          switch (this.lastModalButtonClicked) {
+            case 'yes':
+              this.goToStartStep()
+              break
+            default:
+              break
+          }
+          break
+        case 'validationPass':
+          this.increaseStep()
+          break
+        case 'validationFail':
+          // TODO: Add reseting mutation for step component
+          break
+      }
+      this.hideModal()
     }
   }
 }

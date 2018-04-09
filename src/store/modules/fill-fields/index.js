@@ -1,9 +1,11 @@
-import State from './state'
-import Getters from './getters'
-import Mutations from './mutations'
+import StateFactory from './state'
+import * as getters from './getters'
+import * as mutations from './mutations'
 
-export default {
-  state: State,
-  getters: Getters,
-  mutations: Mutations
+export default (stepsData, stepIndex) => {
+  return {
+    state: StateFactory(stepsData, stepIndex),
+    getters,
+    mutations
+  }
 }

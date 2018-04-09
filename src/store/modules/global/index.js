@@ -1,12 +1,10 @@
 import StateFactory from './state'
-import Getters from './getters'
-import Mutations from './mutations'
+import * as mutations from './mutations'
 
 export default (content) => {
   return {
     namespaced: true,
     state: StateFactory(content),
-    getters: Getters,
-    mutations: Mutations
+    mutations: () => mutations
   }
 }

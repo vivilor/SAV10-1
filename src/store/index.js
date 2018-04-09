@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import GlobalModuleFactory from './modules/global/index'
-import ModalWindowModule from './modules/modal-window'
+import globalModuleFactory from './modules/global/index'
+import modalWindowModule from './modules/modal-window'
 
 Vue.use(Vuex)
 
@@ -32,8 +32,8 @@ export default (content) => {
       modalWindowTypes: modalWindowTypes
     },
     modules: {
-      global: GlobalModuleFactory(content),
-      modalWindow: ModalWindowModule
+      global: globalModuleFactory(content),
+      modalWindow: modalWindowModule
     }
   })
 }

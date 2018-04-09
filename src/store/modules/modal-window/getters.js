@@ -1,16 +1,17 @@
-export const ModalWindowGetters = {
-  content: 'content',
-  buttons: 'buttons'
+const content = (state, getters, rootState) => rootState.modalWindows[state.currentType] || {}
+
+const buttons = (state, getters, rootState) => {
+  let buttons = []
+  let currentWindowButtonTypes = getters.content.buttons
+  if (currentWindowButtonTypes) {
+    for (let buttonType of getters.content.buttons) {
+      buttons.push(rootState.buttons[buttonType])
+    }
+  }
+  return buttons
 }
 
-export default {
-  [ModalWindowGetters.content]: (state, getters, rootState) => rootState.modalWindows[state.currentType] || {},
-  [ModalWindowGetters.buttons]: (state, getters, rootState) => {
-    let content = getters.content && getters.content.buttons
-    if (content) {
-      return Array.filter(
-        Object.values(rootState.buttons),
-        (button, i) => getters.content.buttons.includes(rootState.buttons[i]))
-    } else { return [] }
-  }
+export {
+  content,
+  buttons
 }

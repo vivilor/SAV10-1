@@ -1,13 +1,12 @@
-export const GlobalMutations = {
-  step: {
-    change: 'step-change',
-    toStart: 'step-to-ttart',
-    increase: 'step-increase'
-  }
-}
+/* eslint-disable no-return-assign */
+const CHANGE_STEP = (state, newStep) => state.step.current = newStep
 
-export default {
-  [GlobalMutations.step.change] (state, newStepIndex) { state.step.current = newStepIndex },
-  [GlobalMutations.step.toStart] (state) { state.step.current = state.step.start },
-  [GlobalMutations.step.increase] (state) { state.step.current++ }
+const GO_TO_START_STEP = state => state.step = state.step.start
+
+const INCREASE_STEP = state => state.step.current++
+
+export {
+  CHANGE_STEP,
+  GO_TO_START_STEP,
+  INCREASE_STEP
 }

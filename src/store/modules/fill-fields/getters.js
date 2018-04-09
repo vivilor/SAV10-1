@@ -1,24 +1,33 @@
-export default {
-  allQuestionAnswered: state => {
-    for (let questionAnswers of state.questionsAnswers) {
-      for (let questionAnswer of questionAnswers) {
-        if (questionAnswer === '') { return false }
+const allFieldsNotEmpty = state => {
+  for (let questionAnswers of state.questionsAnswers) {
+    for (let questionAnswer of questionAnswers) {
+      if (questionAnswer === '') {
+        return false
       }
     }
+  }
+  return true
+}
 
-    return true
-  },
+/**
+ * Validate all fields for current question
+ * @param state
+ * @returns {Function}
+ */
 
-  allAnswersValid: state => {
-    for (let questionAnswersValidity of state.questionsAnswersValidity) {
-      for (let questionAnswerValidity of questionAnswersValidity) {
-        if (!questionAnswerValidity) { return false }
-      }
-    }
+const areQuestionFieldsValid = state => payload => {
+  let questionIndex = payload.questionIndex
+  let currentAnswers = state.field.values[questionIndex]
+  let validAnswers = payload.validAnswers
 
-    return true
-  },
+  for (let answer of currentAnswers) {
+    if (!validAnswers.includes(answer)) { return false }
+  }
 
-  isQuestionAnswered: (state, questionIndex) => !state.questionsAnswersValidity[questionIndex].includes(false)
+  return true
+}
 
+export {
+  allFieldsNotEmpty,
+  areQuestionFieldsValid
 }

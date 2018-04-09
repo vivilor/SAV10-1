@@ -7,30 +7,37 @@ transition(name="modal-window")
           h3.header(v-if="content.header" v-html="content.header")
           .message(v-if="content.message" v-html="content.message")
         .buttons(v-if="buttons")
-          TextButton(v-for="(button, i) in buttons", :key="button",
+          TextButton(v-for="(button, i) in buttons", :key="i",
             :name="content.buttons[i]"
             :config="button"
           )
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
-import TextButton from '@/components/widgets/TextButton'
-import ModalWindowState from '@/store/modules/modal-window/state'
-import { ModalWindowGetters } from '@/store/modules/modal-window/getters'
-import { ModalWindowMutations } from '@/store/modules/modal-window/mutations'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 
-const { mapState, mapGetters, mapMutations } = createNamespacedHelpers('modalWindow')
+import TextButton from '@/components/widgets/TextButton'
+
+const modalWindowModuleName = 'modalWindow'
 
 export default {
   name: 'ModalWindow',
   components: {TextButton},
   computed: {
-    ...mapState(Object.keys(ModalWindowState)),
-    ...mapGetters(Object.keys(ModalWindowGetters))
+    ...mapState(modalWindowModuleName, {
+      visible: 'visible'
+    }),
+    ...mapGetters(modalWindowModuleName, {
+      content: 'content',
+      buttons: 'buttons'
+    })
   },
   methods: {
-    ...mapMutations(Object.keys(ModalWindowMutations))
+    ...mapMutations(modalWindowModuleName, {
+      show: 'SHOW',
+      hide: 'HIDE',
+      setType: 'SET_TYPE'
+    })
   }
 }
 </script>
@@ -99,6 +106,7 @@ export default {
         .text {
           flex: auto;
           display: flex;
+          min-width: 300px;
           flex-direction: column;
           & > {
             h3.header {

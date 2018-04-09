@@ -1,6 +1,6 @@
 <template lang="pug">
   .TextButton(
-    :class="renderClasses"
+    :class="renderClasses()"
     @click="onClick"
   )
     div(v-if="config" v-html="config.text ? config.text : ''")
@@ -18,7 +18,8 @@ const propConfig = {
 }
 const propName = {
   type: String,
-  required: true
+  required: true,
+  default: ''
 }
 
 const Events = {
@@ -40,20 +41,7 @@ export default {
       return [ typeClass, flexible ]
     },
     onClick () {
-      if (this.name) {
-        this.$emit(Events.click, this.name)
-      }
-    }
-  },
-  mounted () {
-    this.updateButton()
-  },
-  beforeUpdate () {
-    this.updateButton()
-  },
-  watch: {
-    name (newVal) {
-      this.updateButton(newVal)
+      this.$emit(Events.click, this.name)
     }
   }
 }
@@ -64,10 +52,12 @@ export default {
 
 .TextButton {
   height: 36px;
-  border-radius: 2px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  border-radius: 2px;
 
+  cursor: pointer;
+  transition: .2s ease-out;
   /**
    * Button types' styles
    */
