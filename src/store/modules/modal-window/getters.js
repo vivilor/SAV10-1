@@ -1,17 +1,13 @@
-const content = (state, getters, rootState) => rootState.modalWindows[state.currentType] || {}
-
-const buttons = (state, getters, rootState) => {
-  let buttons = []
-  let currentWindowButtonTypes = getters.content.buttons
-  if (currentWindowButtonTypes) {
-    for (let buttonType of getters.content.buttons) {
-      buttons.push(rootState.buttons[buttonType])
-    }
-  }
-  return buttons
-}
+const closable = state => state.content.closable || false
+const header = state => state.content.header || ''
+const message = state => state.content.message || ''
+const typeData = state => state.content[state.currentType]
+const buttonTypes = state => state.content.buttons || []
 
 export {
-  content,
-  buttons
+  header,
+  message,
+  closable,
+  typeData,
+  buttonTypes
 }

@@ -6,15 +6,13 @@ h1.TaskHeader(v-html="text")
 export default {
   name: 'TaskHeader',
   computed: {
-    text () {
-      return this.$store.state.global.taskHeader
-    }
+    text () { return this.$store.state.content.headers.task }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/default.scss";
+@import "~@/assets/styles/default.scss";
 
 .TaskHeader {
   color: $text-clr;

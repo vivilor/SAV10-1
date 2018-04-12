@@ -1,11 +1,14 @@
 import StateFactory from './state'
 import * as getters from './getters'
+import * as actions from './actions'
 import * as mutations from './mutations'
 
-export default (stepsData, stepIndex) => {
+export default (stepData) => {
   return {
-    state: StateFactory(stepsData, stepIndex),
+    state: StateFactory(stepData),
+    actions,
     getters,
-    mutations
+    mutations,
+    namespaced: true
   }
 }

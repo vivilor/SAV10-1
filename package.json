@@ -4,6 +4,7 @@
   "description": "childrenscience.ru",
   "author": "vivilor <viktor.livantsov@outlook.com>",
   "private": true,
+  "language": "ru-ru",
   "scripts": {
     "prod": "webpack --config build/webpack.prod.conf.js",
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",

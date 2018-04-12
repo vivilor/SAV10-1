@@ -1,5 +1,11 @@
 {
-  "header": "Движения окружности,<br>сохраняющие правильный треугольник.",
+  "headers": {
+    "task": "Движения окружности,<br>сохраняющие правильный треугольник.",
+    "step": [
+      "Перечислите все движения окружности,<br>сохраняющие правильный треугольник.",
+      "Заполните таблицу композиций<br>подгруппы<br>G = {R<sub>120°</sub>, R<sub>240°</sub> ,R<sub>360°</sub>=Id, S<sub>a</sub>, S<sub>b</sub>, S<sub>c</sub>}."
+    ]
+  } ,
   "buttons": {
     "yes": {
       "text": "Да"
@@ -28,56 +34,54 @@
       "message": "Все правильно",
       "buttons": ["continue"]
     },
-    "validationFail": {
+    "validationFailed": {
       "message": "Что-то не так! Попробуй еще раз.",
       "buttons": ["continue"]
     },
-    "tipRequest": {
-      "message": "",
+    "tipRequested": {
+      "message": "Помните, что движения выполняются справа налево",
+      "closable": true
+    },
+    "finalReached": {
+      "message": "Все правильно!",
       "closable": true
     }
   },
   "steps": {
-    "count": 2,
     "data": [
       {
-        "header": "Перечислите все движения окружности,<br>сохраняющие правильный треугольник.",
         "buttons": ["validate"],
-        "questions": {
-          "showIndex": true,
-          "data": [
-            {"text": "Сколько градусов составляет этот угол?"},
-            {"text": "Перечислите повороты:"},
-            {"text": "Перечислите отражения:"}
-          ]
-        },
-        "answers": {
-          "data": [
-            {
-              "postfix": "°",
-              "position": "normal",
-              "correctValues": [120]
-            },
-            {
-              "prefix": "R",
-              "postfix": "°",
-              "position": "subscript",
-              "correctValues": [120, 240, 360]
-            },
-            {
-              "prefix": "S",
-              "position": "subscript",
-              "correctValues": ["a", "b", "c"]
-            }
-          ]
-        }
+        "questions": [
+          {"text": "Сколько градусов составляет этот угол?"},
+          {"text": "Перечислите повороты:"},
+          {"text": "Перечислите отражения:"}
+        ],
+        "fields": [
+          {
+            "postfix": "°",
+            "position": "normal",
+            "count": 1
+          },
+          {
+            "prefix": "R",
+            "postfix": "°",
+            "position": "subscript",
+            "count": 3
+          },
+          {
+            "prefix": "S",
+            "position": "subscript",
+            "count": 3
+          }
+        ],
+        "answers": [
+          [120],
+          [120, 240, 360],
+          ["a", "b", "c"]
+        ]
       },
       {
-        "header": "Заполните таблицу композиций<br>подгруппы<br>G = {R<sub>120°</sub>, R<sub>240°</sub> ,R<sub>360°</sub>=Id, S<sub>a</sub>, S<sub>b</sub>, S<sub>c</sub>}.",
-        "buttons": [
-          {"text": "Подсказка", "type": "danger"},
-          {"text": "Проверить"}
-        ],
+        "buttons": ["tip", "validate"],
         "tip": "Подсказка: так как G — конечная подгруппа, композиция любых элементов из G также является элементом G",
         "labels": [
           "R<sub>120°</sub>",
@@ -95,13 +99,6 @@
           [3, 5, 4, 1, 2, 0],
           [4, 3, 5, 0, 1, 2]
         ]
-      }
-    ]
-  },
-  "window": {
-    "modal": [
-      {
-        "text": "Помните, что движения выполняются справа налево"
       }
     ]
   }

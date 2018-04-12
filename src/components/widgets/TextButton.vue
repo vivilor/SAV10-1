@@ -1,16 +1,13 @@
 <template lang="pug">
-  .TextButton(
-    :class="renderClasses()"
-    @click="onClick"
-  )
-    div(v-if="config" v-html="config.text ? config.text : ''")
+  .TextButton(:class="renderClasses()")
+    div(v-if="content" v-html="content.text || ''")
 </template>
 
 <script>
 /**
  * Props declaring
  */
-const propConfig = {
+const propContent = {
   type: Object,
   default () {
     return {}
@@ -22,33 +19,24 @@ const propName = {
   default: ''
 }
 
-const Events = {
-  click: 'button-click',
-  mouseenter: 'button-mouseenter',
-  mouseleave: 'button-mouseleave'
-}
-
 export default {
   name: 'TextButton',
   props: {
-    config: propConfig,
+    content: propContent,
     name: propName
   },
   methods: {
     renderClasses () {
-      let typeClass = this.config.type || 'normal'
-      let flexible = this.config.flexible || ''
+      let typeClass = this.content.type || 'normal'
+      let flexible = this.content.flexible || ''
       return [ typeClass, flexible ]
-    },
-    onClick () {
-      this.$emit(Events.click, this.name)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '~@/styles/default';
+@import '~@/assets/styles/default';
 
 .TextButton {
   height: 36px;

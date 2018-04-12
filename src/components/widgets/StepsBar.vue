@@ -14,17 +14,17 @@ export default {
   name: 'StepsBar',
   computed: {
     currentStep () {
-      return this.$store.state.global.step.current
+      return this.$store.state.step.current
     },
     stepsCount () {
-      return this.$store.state.global.step.count
+      return this.$store.state.step.count
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/default";
+@import "~@/assets/styles/default";
 ul.StepsBar {
   list-style-type: none;
   display: flex;

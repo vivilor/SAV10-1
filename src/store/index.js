@@ -1,39 +1,38 @@
-import Vue from 'vue'
 import Vuex from 'vuex'
 
-import globalModuleFactory from './modules/global/index'
-import modalWindowModule from './modules/modal-window'
+import State from './state'
+import * as getters from './getters'
+import * as mutations from './mutations'
 
-Vue.use(Vuex)
+import * as StepModules from './step-modules'
 
-export default (content) => {
-  let objectFromKeys = (srcObj) => {
-    let ret = {}
+import ModalWindow from './modules/modal-window'
 
-    // eslint-disable-next-line no-return-assign
-    Object.keys(srcObj).forEach(key => ret[key] = key)
-    return ret
-  }
+const stepModulesFabric = (content, stepNames) => {
+  if (
+    !content.steps ||
+    !content.steps.data ||
+    typeof content.steps !== 'object' ||
+    stepNames.length !== content.steps.data.length
+  ) return
 
-  let modalWindows = content.modalWindows || {}
-  let modalWindowTypes = objectFromKeys(modalWindows)
+  let modules = {}
 
-  let steps = content.steps || {}
+  content.steps.data.forEach((stepData, stepIndex) => {
+    modules['step' + stepIndex] = StepModules[stepNames[stepIndex]](stepData)
+  })
 
-  let buttons = content.buttons || {}
-  let buttonTypes = objectFromKeys(buttons)
+  return modules
+}
 
+export default (content, stepNames) => {
   return new Vuex.Store({
-    state: {
-      steps: steps,
-      buttons: buttons,
-      buttonTypes: buttonTypes,
-      modalWindows: modalWindows,
-      modalWindowTypes: modalWindowTypes
-    },
+    state: State(content, stepNames),
+    getters,
+    mutations,
     modules: {
-      global: globalModuleFactory(content),
-      modalWindow: modalWindowModule
+      modalWindow: ModalWindow(content.modalWindows),
+      ...stepModulesFabric(content, stepNames)
     }
   })
 }

@@ -1,13 +1,4 @@
-const allFieldsNotEmpty = state => {
-  for (let questionAnswers of state.questionsAnswers) {
-    for (let questionAnswer of questionAnswers) {
-      if (questionAnswer === '') {
-        return false
-      }
-    }
-  }
-  return true
-}
+const allFieldsAreNotEmpty = state => state
 
 /**
  * Validate all fields for current question
@@ -15,19 +6,9 @@ const allFieldsNotEmpty = state => {
  * @returns {Function}
  */
 
-const areQuestionFieldsValid = state => payload => {
-  let questionIndex = payload.questionIndex
-  let currentAnswers = state.field.values[questionIndex]
-  let validAnswers = payload.validAnswers
-
-  for (let answer of currentAnswers) {
-    if (!validAnswers.includes(answer)) { return false }
-  }
-
-  return true
-}
+const areQuestionFieldsValid = state => state
 
 export {
-  allFieldsNotEmpty,
+  allFieldsAreNotEmpty,
   areQuestionFieldsValid
 }

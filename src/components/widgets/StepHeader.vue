@@ -1,23 +1,20 @@
 <template lang="pug">
-h2.StepHeader(v-html="currentStepHeader")
+h2.StepHeader(v-html="text")
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'StepHeader',
   computed: {
-    currentStep () {
-      return this.$store.state.global.step.current
-    },
-    currentStepHeader () {
-      return this.$store.state.global.step.headers[this.currentStep]
-    }
+    ...mapGetters({ text: 'currentStepHeader' })
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/default";
+@import "~@/assets/styles/default";
 h2.StepHeader {
   color: black;
   margin: 0;

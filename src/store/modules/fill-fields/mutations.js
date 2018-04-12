@@ -1,47 +1,31 @@
 /* eslint-disable no-return-assign */
-import Vue from 'vue'
 
-const SHOW_VALIDATION_RESULT = state =>
-  state.question.statusVisible = Array(state.question.statusVisible).fill(true)
+const SHOW_VALIDATION_RESULT = state => state
 
-const HIDE_VALIDATION_RESULT = state =>
-  state.question.statusVisible = Array(state.question.statusVisible).fill(false)
+const HIDE_VALIDATION_RESULT = state => state
 
-const HIDE_ACTIVE_QUESTION_VALIDATION_RESULT = state =>
-  Vue.$set(state.question.statusVisible, state.question.active, false)
+const HIDE_ACTIVE_QUESTION_VALIDATION_RESULT = state => state
 
-const SET_FIELD_ACTIVE = (state, fieldIndex) => state.field.active = fieldIndex
+const SET_FIELD_ACTIVE = state => state
 
-const SET_QUESTION_ACTIVE = (state, questionIndex) => state.question.active = questionIndex
+const SET_QUESTION_ACTIVE = state => state
 
 // TODO: Add check for payload properties
-const SET_FIELD_VALUE = (state, payload) => Vue.$set(
-  state.field.values[payload.questionIndex], payload.fieldIndex, payload.fieldValue
-)
+const SET_FIELD_VALUE = state => state
 
 // TODO: Add check for payload properties
-const SET_QUESTION_ANSWERED = (state, questionIndex) => Vue.$set(
-  state.question.validation, questionIndex, true
-)
+const SET_QUESTION_ANSWERED = state => state
 
 // TODO: Add check for payload properties
-const SET_QUESTION_UNANSWERED = (state, questionIndex) => Vue.$set(
-  state.question.validation, questionIndex, false
-)
+const SET_QUESTION_UNANSWERED = state => state
 
-const RESET_FIELD_VALUES = state => {
-  for (let i in state.field.values) {
-    state.field.values[i] = Array(state.field.values.length).fill('')
-  }
-}
+const RESET_FIELD_VALUES = state => state
 
-const RESET_QUESTION_VALIDATION = state => {
-  state.question.validation = Array(state.question.validation.length).fill(false)
-}
+const RESET_QUESTION_VALIDATION = state => state
 
-const SET_FIELD_INACTIVE = state => state.field.active = -1
+const SET_FIELD_INACTIVE = state => state
 
-const SET_QUESTION_INACTIVE = state => state.question.active = -1
+const SET_QUESTION_INACTIVE = state => state
 
 export {
   SET_FIELD_VALUE,

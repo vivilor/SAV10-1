@@ -1,15 +1,16 @@
 <template lang="pug">
 transition(name="modal-window")
   .ModalWindow(v-if="content", v-show="visible")
-    .overlay(@click="hide")
+    .overlay(@click="onOverlayClick")
       .window
         .text
-          h3.header(v-if="content.header" v-html="content.header")
-          .message(v-if="content.message" v-html="content.message")
-        .buttons(v-if="buttons")
-          TextButton(v-for="(button, i) in buttons", :key="i",
-            :name="content.buttons[i]"
-            :config="button"
+          h3.header(v-if="header" v-html="header")
+          .message(v-if="message" v-html="message")
+        .buttons(v-if="buttonTypes")
+          TextButton(v-for="(buttonType, i) in buttonTypes", :key="i",
+            :name="buttonType"
+            :content="button(buttonType)",
+            @click.native="onClick(buttonType)"
           )
 </template>
 
@@ -18,26 +19,43 @@ import { mapState, mapGetters, mapMutations } from 'vuex'
 
 import TextButton from '@/components/widgets/TextButton'
 
-const modalWindowModuleName = 'modalWindow'
+const ModuleName = 'modalWindow'
 
 export default {
   name: 'ModalWindow',
-  components: {TextButton},
+  components: {
+    TextButton
+  },
   computed: {
-    ...mapState(modalWindowModuleName, {
-      visible: 'visible'
-    }),
-    ...mapGetters(modalWindowModuleName, {
-      content: 'content',
-      buttons: 'buttons'
-    })
+    ...mapState(ModuleName, [
+      'visible',
+      'content'
+    ]),
+    ...mapGetters(ModuleName, [
+      'closable',
+      'header',
+      'message',
+      'buttonTypes'
+    ]),
+    ...mapGetters([
+      'button'
+    ])
   },
   methods: {
-    ...mapMutations(modalWindowModuleName, {
+    ...mapMutations(ModuleName, {
       show: 'SHOW',
       hide: 'HIDE',
       setType: 'SET_TYPE'
-    })
+    }),
+    onOverlayClick () {
+      if (this.closable) {
+        this.hide()
+      }
+    },
+    onButtonClick (buttonName) {
+      this.$emit('button-click', buttonName)
+      this.hide()
+    }
   }
 }
 </script>
@@ -71,7 +89,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-@import "~@/styles/default";
+@import "~@/assets/styles/default";
 
 .ModalWindow {
   top: 0;

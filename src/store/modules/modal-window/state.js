@@ -1,5 +1,7 @@
-export default {
-  visible: false,
-  lastButton: '',
-  currentType: ''
+export default (modalWindows) => {
+  return {
+    content: modalWindows,
+    currentType: '',
+    visible: false
+  }
 }

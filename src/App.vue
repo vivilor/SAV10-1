@@ -6,27 +6,45 @@
     StepsBar
     StepHeader
     StaticBackground
-    ModalWindow(@modal-window-click="onModalWindowClick")
+    .step-wrapper
+      component(
+        v-if="currentStepComponentName",
+        :is="currentStepComponentName"
+      )
+    .buttons(
+      v-if="currentStepButtonTypes"
+      v-for="(buttonType, i) in currentStepButtonTypes", :key="i"
+    )
+      TextButton(
+        :name="buttonType",
+        :content="button(buttonType)",
+        @click.native="onStepButtonClick(buttonType)"
+      )
+    ModalWindow(@button-click="onModalWindowButtonClick")
 </template>
 
 <script>
-import Content from '@/locale/ru-ru'
-
-import TaskHeader from '@/components/widgets/TaskHeader'
 import StepsBar from '@/components/widgets/StepsBar'
 import StepHeader from '@/components/widgets/StepHeader'
-import StaticBackground from '@/components/StaticBackground'
-import RestartButton from '@/components/widgets/RestartButton/RestartButton'
+import TaskHeader from '@/components/widgets/TaskHeader'
+import TextButton from '@/components/widgets/TextButton'
 import ModalWindow from '@/components/widgets/ModalWindow'
+import RestartButton from '@/components/widgets/RestartButton/RestartButton'
+import StaticBackground from '@/components/StaticBackground'
 
-import { mapState, mapMutations, mapActions } from 'vuex'
+import FillFieldsTask from '@/components/steps/fill-fields/FillFieldsTask'
+import DragAndDropTask from '@/components/steps/drag-and-drop/DragAndDropTask'
 
-const modalWindowModuleName = 'modalWindow'
-const globalModuleName = 'global'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+
+const MODAL_WINDOW_MODULE_NAME = 'modalWindow'
 
 export default {
   name: 'App',
   components: {
+    DragAndDropTask,
+    FillFieldsTask,
+    TextButton,
     StepsBar,
     StepHeader,
     ModalWindow,
@@ -34,57 +52,78 @@ export default {
     StaticBackground,
     TaskHeader
   },
-  data () {
-    return {
-      content: Content
-    }
-  },
   computed: {
-    ...mapState(modalWindowModuleName, {
-      currentModalType: 'currentType',
-      lastModalButtonClicked: 'lastButton'
-    })
+    ...mapState(MODAL_WINDOW_MODULE_NAME, {
+      currentModalWindowType: 'currentType'
+    }),
+    ...mapState({
+      currentStep: 'step.current'
+    }),
+    ...mapGetters([
+      'button',
+      'currentStepComponentName',
+      'currentStepButtonTypes'
+    ])
   },
   methods: {
-    /**
-     * Mapping mutations
-     */
-    ...mapMutations(modalWindowModuleName, {
-      showModal: 'SHOW',
-      hideModal: 'HIDE',
+    /** Mapping mutations */
+
+    ...mapMutations(MODAL_WINDOW_MODULE_NAME, {
       setModalType: 'SET_TYPE'
     }),
-    ...mapMutations(globalModuleName, {
+    ...mapMutations({
       changeStep: 'CHANGE_STEP',
-      goToStartStep: 'GO_TO_START_STEP',
       increaseStep: 'INCREASE_STEP'
     }),
-    ...mapActions(modalWindowModuleName, {
+
+    /** Mapping actions */
+
+    ...mapActions(MODAL_WINDOW_MODULE_NAME, {
       setAndShowModal: 'setAndShowModal'
     }),
+    ...mapActions(['validateStep', 'resetStep']),
+
+    /** Event handlers section */
+
+    /** Native events' callbacks */
 
     /**
-     * Event handlers section
+     * @component TextButton
+     * @event click.native
+     * @param buttonName
      */
+    onStepButtonClick (buttonName) {
+      if (buttonName === 'validate') {
+        this.validateStep()
+        return
+      }
+      if (buttonName === 'tip') {
+        this.setAndShowModal('tipRequested')
+      }
+    },
+
+    /** Child component events' callbacks */
 
     /**
-     * Child component events' callbacks
-     */
-
-    /**
-     * @event: restart-request
-     * @component: RestartButton
+     * @component RestartButton
+     * @event restart-request
      */
     onRestartRequest () {
       this.setAndShowModal('restartRequested')
     },
 
-    onModalWindowClick () {
-      switch (this.currentModalType) {
+    /**
+     * @component ModalWindow
+     * @event button-click
+     * @param buttonName
+     */
+    onModalWindowButtonClick (buttonName) {
+      switch (this.currentModalWindowType) {
         case 'restartRequested':
-          switch (this.lastModalButtonClicked) {
+          switch (buttonName) {
             case 'yes':
-              this.goToStartStep()
+              this.changeStep(0)
+              this.resetStep()
               break
             default:
               break
@@ -92,19 +131,20 @@ export default {
           break
         case 'validationPass':
           this.increaseStep()
+          this.resetStep()
           break
         case 'validationFail':
-          // TODO: Add reseting mutation for step component
+          this.resetStep()
           break
       }
-      this.hideModal()
     }
+
   }
 }
 </script>
 
 <style lang="scss">
-@import "~@/styles/default.scss";
+@import "~@/assets/styles/default.scss";
 
 .App {
   @include workfieldStyle;
@@ -116,6 +156,14 @@ export default {
       left: 30px;
       bottom: 0;
       position: absolute;
+    }
+    & > div.buttons {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      & > *:not(:first-child) {
+        margin-left: 10px;
+      }
     }
   }
 }
