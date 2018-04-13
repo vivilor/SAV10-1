@@ -8,11 +8,13 @@
   } ,
   "buttons": {
     "yes": {
-      "text": "Да"
+      "text": "Да",
+      "flexible": true
     },
     "no": {
       "type": "danger",
-      "text": "Нет"
+      "text": "Нет",
+      "flexible": true
     },
     "continue": {
       "text": "Продолжить"

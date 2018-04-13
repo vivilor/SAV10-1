@@ -28,7 +28,7 @@ export default {
   methods: {
     renderClasses () {
       let typeClass = this.content.type || 'normal'
-      let flexible = this.content.flexible || ''
+      let flexible = this.content.flexible ? 'flexible' : ''
       return [ typeClass, flexible ]
     }
   }
@@ -78,6 +78,7 @@ export default {
     justify-content: center;
   }
   &.flexible {
+    padding: 0px 15px;
     justify-content: flex-start;
   }
 

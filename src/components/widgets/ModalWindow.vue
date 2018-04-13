@@ -10,7 +10,7 @@ transition(name="modal-window")
           TextButton(v-for="(buttonType, i) in buttonTypes", :key="i",
             :name="buttonType"
             :content="button(buttonType)",
-            @click.native="onClick(buttonType)"
+            @click.native="onButtonClick(buttonType)"
           )
 </template>
 
