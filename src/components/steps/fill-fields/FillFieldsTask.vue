@@ -42,14 +42,14 @@ export default {
   },
   data () {
     return {
+      stepIndex: 1,
       selectedQuestion: -1,
       content: Content.steps.data[0],
       values: valuesArray()
     }
   },
   mounted () {
-    this.eventBus.$on('reset', this.onReset)
-    this.eventBus.$on('validate', this.onValidate)
+    this.handleEvents()
   },
   methods: {
     handleEvents () {
@@ -62,21 +62,22 @@ export default {
     onFieldBlur () {
       this.selectedQuestion = -1
     },
-    onValidate () {
+    onValidate (stepIndex) {
+      if (stepIndex !== this.stepIndex) return;
       for (let i = 0; i < this.values.length; i++) {
         for (let answer of this.content.answers[i]) {
           if (!this.values[i].includes(answer.toString())) {
-            console.log(this.values[i], answer.toString())
-            this.$emit('validation-fail')
+            this.eventBus.$emit('validation-fail')
             return
           }
         }
       }
 
-      this.$emit('validation-pass')
+      this.eventBus.$emit('validation-pass')
     },
 
-    onReset () {
+    onReset (stepIndex) {
+      if (stepIndex !== this.stepIndex) return;
       this.selectedQuestion = -1
       this.values = valuesArray()
     }

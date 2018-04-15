@@ -10,9 +10,7 @@
       component(
         v-if="currentStepComponentName",
         :is="currentStepComponentName"
-        :event-bus="eventBus",
-        @validation-fail="onValidationFail",
-        @validation-pass="onValidationPass"
+        :event-bus="eventBus"
       )
     .buttons(
       v-if="currentStepButtonTypes"
@@ -39,7 +37,7 @@ import RestartButton from '@/components/widgets/RestartButton/RestartButton'
 import StaticBackground from '@/components/StaticBackground'
 
 import FillFieldsTask from '@/components/steps/fill-fields/FillFieldsTask'
-import DragAndDropTask from '@/components/steps/drag-and-drop/DragAndDropTask'
+import DragAndDropGridTask from '@/components/steps/drag-and-drop-grid/DragAndDropGridTask'
 
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 
@@ -53,7 +51,7 @@ export default {
     }
   },
   components: {
-    DragAndDropTask,
+    DragAndDropGridTask,
     FillFieldsTask,
     TextButton,
     StepsBar,
@@ -72,9 +70,14 @@ export default {
     }),
     ...mapGetters([
       'button',
+      'isLastStep',
       'currentStepComponentName',
       'currentStepButtonTypes'
     ])
+  },
+  mounted () {
+    this.eventBus.$on('validation-fail', this.onValidationFail)
+    this.eventBus.$on('validation-pass', this.onValidationPass)
   },
   methods: {
     /** Mapping mutations */
@@ -129,7 +132,7 @@ export default {
     },
 
     onValidationPass () {
-      this.setAndShowModal('validationPassed')
+      this.setAndShowModal(this.isLastStep ? 'finalReached' : 'validationPassed')
     },
 
     onValidationFail () {
@@ -162,7 +165,6 @@ export default {
           break
       }
     }
-
   }
 }
 </script>
@@ -173,6 +175,8 @@ export default {
 .App {
   @include workfieldStyle;
   & > div {
+    // Layout subscript captions font size fix
+    sub { font-size: 60%; }
     display: inline-block;
     position: relative;
     @include innerWorkfieldZoneStyle;
@@ -183,9 +187,6 @@ export default {
     }
     & > div.step-wrapper {
       display: inline-block;
-      bottom: 0;
-      right: 0;
-      width: 460px;
     }
     & > div.buttons {
       position: absolute;
