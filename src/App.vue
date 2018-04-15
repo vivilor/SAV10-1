@@ -10,6 +10,9 @@
       component(
         v-if="currentStepComponentName",
         :is="currentStepComponentName"
+        :event-bus="eventBus",
+        @validation-fail="onValidationFail",
+        @validation-pass="onValidationPass"
       )
     .buttons(
       v-if="currentStepButtonTypes"
@@ -24,6 +27,9 @@
 </template>
 
 <script>
+
+import Vue from 'vue'
+
 import StepsBar from '@/components/widgets/StepsBar'
 import StepHeader from '@/components/widgets/StepHeader'
 import TaskHeader from '@/components/widgets/TaskHeader'
@@ -41,6 +47,11 @@ const MODAL_WINDOW_MODULE_NAME = 'modalWindow'
 
 export default {
   name: 'App',
+  data () {
+    return {
+      eventBus: new Vue()
+    }
+  },
   components: {
     DragAndDropTask,
     FillFieldsTask,
@@ -81,12 +92,17 @@ export default {
     ...mapActions(MODAL_WINDOW_MODULE_NAME, {
       setAndShowModal: 'setAndShowModal'
     }),
-    ...mapActions(['validateStep', 'resetStep']),
 
     /** Event handlers section */
 
     /** Native events' callbacks */
 
+    validateStep () {
+      this.eventBus.$emit('validate')
+    },
+    resetStep () {
+      this.eventBus.$emit('reset')
+    },
     /**
      * @component TextButton
      * @event click.native
@@ -112,6 +128,14 @@ export default {
       this.setAndShowModal('restartRequested')
     },
 
+    onValidationPass () {
+      this.setAndShowModal('validationPassed')
+    },
+
+    onValidationFail () {
+      this.setAndShowModal('validationFailed')
+    },
+
     /**
      * @component ModalWindow
      * @event button-click
@@ -129,11 +153,11 @@ export default {
               break
           }
           break
-        case 'validationPass':
+        case 'validationPassed':
           this.increaseStep()
           this.resetStep()
           break
-        case 'validationFail':
+        case 'validationFailed':
           this.resetStep()
           break
       }
@@ -156,6 +180,12 @@ export default {
       left: 30px;
       bottom: 0;
       position: absolute;
+    }
+    & > div.step-wrapper {
+      display: inline-block;
+      bottom: 0;
+      right: 0;
+      width: 460px;
     }
     & > div.buttons {
       position: absolute;

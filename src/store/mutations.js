@@ -1,7 +1,7 @@
 /* eslint-disable no-return-assign */
-const INCREASE_STEP = state => state.currentStep++
-const DECREASE_STEP = state => state.currentStep--
-const CHANGE_STEP = (state, newStepIndex) => state.currentStep = newStepIndex
+const INCREASE_STEP = state => state.step.current++
+const DECREASE_STEP = state => state.step.current--
+const CHANGE_STEP = (state, newStepIndex) => state.step.current = newStepIndex
 
 export {
   INCREASE_STEP,

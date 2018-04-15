@@ -62,18 +62,21 @@
           {
             "postfix": "°",
             "position": "normal",
-            "count": 1
+            "count": 1,
+            "width": "44px"
           },
           {
             "prefix": "R",
             "postfix": "°",
             "position": "subscript",
-            "count": 3
+            "count": 3,
+            "width": "26px"
           },
           {
             "prefix": "S",
             "position": "subscript",
-            "count": 3
+            "count": 3,
+            "width": "17px"
           }
         ],
         "answers": [

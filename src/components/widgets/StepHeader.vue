@@ -19,6 +19,8 @@ h2.StepHeader {
   color: black;
   margin: 0;
   height: 56px;
+  display: inline-block;
+  vertical-align: top;
   @include subheaderText;
 }
 </style>

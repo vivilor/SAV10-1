@@ -1,11 +1,14 @@
 const DEFAULT_TYPE_DATA = {
-  header: '',
+  header: 'lol',
   message: '',
   closable: true,
   buttonTypes: []
 }
 
-const typeData = state => state.content[state.currentType] || DEFAULT_TYPE_DATA
+const typeData = state => {
+  console.log(state.content[state.currentType])
+  return state.content[state.currentType] || DEFAULT_TYPE_DATA
+}
 
 const header = (state, getters) => getters.typeData.header || ''
 const message = (state, getters) => getters.typeData.message || ''
