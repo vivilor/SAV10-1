@@ -42,7 +42,7 @@ export default {
   },
   data () {
     return {
-      stepIndex: 1,
+      stepIndex: 0,
       selectedQuestion: -1,
       content: Content.steps.data[0],
       values: valuesArray()
@@ -63,7 +63,7 @@ export default {
       this.selectedQuestion = -1
     },
     onValidate (stepIndex) {
-      if (stepIndex !== this.stepIndex) return;
+      if (stepIndex !== this.stepIndex) return
       for (let i = 0; i < this.values.length; i++) {
         for (let answer of this.content.answers[i]) {
           if (!this.values[i].includes(answer.toString())) {
@@ -77,7 +77,7 @@ export default {
     },
 
     onReset (stepIndex) {
-      if (stepIndex !== this.stepIndex) return;
+      if (stepIndex !== this.stepIndex) return
       this.selectedQuestion = -1
       this.values = valuesArray()
     }

@@ -65,10 +65,8 @@ export default {
     ...mapState(MODAL_WINDOW_MODULE_NAME, {
       currentModalWindowType: 'currentType'
     }),
-    ...mapState({
-      currentStep: 'step.current'
-    }),
     ...mapGetters([
+      'currentStep',
       'button',
       'isLastStep',
       'currentStepComponentName',
@@ -101,10 +99,10 @@ export default {
     /** Native events' callbacks */
 
     validateStep () {
-      this.eventBus.$emit('validate')
+      this.eventBus.$emit('validate', this.currentStep)
     },
     resetStep () {
-      this.eventBus.$emit('reset')
+      this.eventBus.$emit('reset', this.currentStep)
     },
     /**
      * @component TextButton

@@ -57,7 +57,7 @@ export default {
   name: 'DragAndDropGridTask',
   data () {
     return {
-      stepIndex: 0,
+      stepIndex: 1,
       content: Content.steps.data[1],
       traps: Array.from(Array(6), () => Array(6).fill(-1))
     }
