@@ -104,6 +104,7 @@ export default {
     resetStep ({ full } = { full: true }) {
       this.eventBus.$emit('reset', this.currentStep, full)
     },
+
     /**
      * @component TextButton
      * @event click.native
