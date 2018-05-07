@@ -5,6 +5,7 @@ import * as getters from './getters'
 import * as mutations from './mutations'
 
 import ModalWindow from './modules/modal-window'
+import FillFields from './modules/fill-fields'
 
 export default (content, stepNames) => {
   return new Vuex.Store({
@@ -12,7 +13,8 @@ export default (content, stepNames) => {
     getters,
     mutations,
     modules: {
-      modalWindow: ModalWindow(content.modalWindows)
+      modalWindow: ModalWindow(content.modalWindows),
+      fillFields: FillFields
     }
   })
 }

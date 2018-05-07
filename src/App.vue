@@ -101,8 +101,8 @@ export default {
     validateStep () {
       this.eventBus.$emit('validate', this.currentStep)
     },
-    resetStep () {
-      this.eventBus.$emit('reset', this.currentStep)
+    resetStep ({ full } = { full: true }) {
+      this.eventBus.$emit('reset', this.currentStep, full)
     },
     /**
      * @component TextButton
@@ -159,7 +159,7 @@ export default {
           this.resetStep()
           break
         case 'validationFailed':
-          this.resetStep()
+          this.resetStep({full: false})
           break
       }
     }

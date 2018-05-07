@@ -3,37 +3,37 @@
   .Question(v-for="(question,i) in content.questions")
     .QuestionText(
       v-html="(i+1) + ' ' + question.text"
-      :class="{ highlight: selectedQuestion === i }"
+      :class="{ highlight: activeQuestion === i }"
     )
     .QuestionFields
-      .InputField(v-for="j in content.fields[i].count")
-        .prefix(v-html="content.fields[i].prefix || ''")
-         <!--TODO: Refactor bindings-->
-        .input-wrapper(
-          :class="content.fields[i].position"
-          :style="{ width: content.fields[i].width }"
-        )
-          input(
-            v-model="values[i][j - 1]"
-            type="text",
-            @focus="onFieldFocus(i)",
-            @blur="onFieldBlur"
-          )
-          .line
-        .postfix(v-html="content.fields[i].postfix || ''")
+      InputField(
+        v-for="j in content.fields[i].count",
+        :key="j",
+        :width="content.fields[i].width",
+        :prefix="content.fields[i].prefix",
+        :postfix="content.fields[i].postfix",
+        :position="content.fields[i].position",
+        :field-index="j-1",
+        :question-index="i",
+      )
 </template>
 
 <script>
 import Content from '@/locale/ru-ru'
+import InputField from './InputField'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 
-const valuesArray = () => [
-  [''],
-  ['', '', ''],
-  ['', '', '']
+const validity = [
+  [true],
+  [true, true, true],
+  [true, true, true]
 ]
+
+const RELATED_MODULE_NAME = 'fillFields'
 
 export default {
   name: 'FillFieldsTask',
+  components: {InputField},
   props: {
     eventBus: {
       type: Object,
@@ -41,45 +41,72 @@ export default {
     }
   },
   data () {
+    const content = Content.steps.data[0]
+    const answers = Array.from(content.answers, row => Array.from(row, answer => answer.toString()))
     return {
       stepIndex: 0,
-      selectedQuestion: -1,
-      content: Content.steps.data[0],
-      values: valuesArray()
+      answers,
+      content
     }
   },
   mounted () {
     this.handleEvents()
   },
+  computed: {
+    ...mapState(RELATED_MODULE_NAME, [
+      'values'
+    ]),
+    ...mapGetters(RELATED_MODULE_NAME, [
+      'activeQuestion'
+    ])
+  },
   methods: {
+    ...mapMutations(RELATED_MODULE_NAME, [
+      'UPDATE_VALIDITY',
+      'RESET_VALIDITY',
+      'RESET_HIGHLIGHT',
+      'HIGHLIGHT_ALL',
+      'RESET_ALL_VALUES',
+      'RESET_ACTIVE_QUESTION'
+    ]),
     handleEvents () {
       this.eventBus.$on('validate', this.onValidate)
       this.eventBus.$on('reset', this.onReset)
     },
-    onFieldFocus (i) {
-      this.selectedQuestion = i
-    },
-    onFieldBlur () {
-      this.selectedQuestion = -1
-    },
     onValidate (stepIndex) {
-      if (stepIndex !== this.stepIndex) return
-      for (let i = 0; i < this.values.length; i++) {
-        for (let answer of this.content.answers[i]) {
-          if (!this.values[i].includes(answer.toString())) {
-            this.eventBus.$emit('validation-fail')
-            return
+      if (stepIndex !== this.stepIndex) { return }
+
+      for (let i = 0; i < validity.length; i++) {
+        validity[i].fill(true)
+      }
+
+      let isValid = true
+      for (let i = 0; i < this.answers.length; i++) {
+        for (let j = 0; j < this.answers[i].length; j++) {
+          console.log(this.answers[i], this.values[i][j], !this.answers[i].includes(this.values[i][j].toString()))
+          if (!this.answers[i].includes(this.values[i][j])) {
+            validity[i][j] = false
+            if (isValid) isValid = false
           }
         }
       }
 
-      this.eventBus.$emit('validation-pass')
+      this.HIGHLIGHT_ALL()
+      this.UPDATE_VALIDITY(validity)
+      this.eventBus.$emit(isValid ? 'validation-pass' : 'validation-fail')
     },
 
-    onReset (stepIndex) {
+    onReset (stepIndex, isFull) {
       if (stepIndex !== this.stepIndex) return
-      this.selectedQuestion = -1
-      this.values = valuesArray()
+
+      this.RESET_ACTIVE_QUESTION()
+
+      if (isFull) {
+        console.log('Full restart')
+        this.RESET_ALL_VALUES()
+        this.RESET_VALIDITY()
+        this.RESET_HIGHLIGHT()
+      }
     }
   }
 }
