@@ -50,8 +50,8 @@ export default {
       'highlight',
       'validity'
     ]),
-    invalidationDisposed() {
-      return(
+    invalidationDisposed () {
+      return (
         this.highlight[this.questionIndex][this.fieldIndex] &&
         !this.validity[this.questionIndex][this.fieldIndex]
       )
