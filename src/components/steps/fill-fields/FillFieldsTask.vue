@@ -42,7 +42,13 @@ export default {
   },
   data () {
     const content = Content.steps.data[0]
-    const answers = Array.from(content.answers, row => Array.from(row, answer => answer.toString()))
+    const answers = Array.from(
+      content.answers,
+      row => Array.from(
+        row,
+        answer => answer.toString()
+      )
+    )
     return {
       stepIndex: 0,
       answers,
@@ -76,17 +82,24 @@ export default {
     onValidate (stepIndex) {
       if (stepIndex !== this.stepIndex) { return }
 
+      let answers = Array.from(this.answers, answer => answer.slice())
+      let isValid = true
+
       for (let i = 0; i < validity.length; i++) {
         validity[i].fill(true)
       }
 
-      let isValid = true
-      for (let i = 0; i < this.answers.length; i++) {
-        for (let j = 0; j < this.answers[i].length; j++) {
-          console.log(this.answers[i], this.values[i][j], !this.answers[i].includes(this.values[i][j].toString()))
-          if (!this.answers[i].includes(this.values[i][j])) {
+      for (let i = 0; i < answers.length; i++) {
+        for (let j = 0; j < answers[i].length; j++) {
+          if (!answers[i].includes(this.values[i][j])) {
             validity[i][j] = false
-            if (isValid) isValid = false
+
+            if (isValid) {
+              isValid = false
+            }
+          } else {
+            answers[i][answers[i].indexOf(this.values[i][j])] = undefined
+            console.log(answers[i])
           }
         }
       }

@@ -23,10 +23,16 @@ const PROP_POSTFIX = {type: String, required: false, default: ''}
 const PROP_POSITION = {type: String, required: false, default: 'normal'}
 
 /**
- * Class, that used to highlight component content as invalid
+ * CSS class name, that used to highlight component content as invalid
  * @type {string}
  */
 const CSS_CLASS_WRONG = 'wrong'
+
+/**
+ * CSS class name, that used to highlight component content as valid
+ * @type {string}
+ */
+const CSS_CLASS_CORRECT = 'correct'
 
 /**
  * Vuex module, related to this component
@@ -97,11 +103,12 @@ export default {
     renderClass () {
       let classes = []
 
-      if (
-        this.highlight[this.questionIndex][this.fieldIndex] &&
-        !this.validity[this.questionIndex][this.fieldIndex]
-      ) {
-        classes.push(CSS_CLASS_WRONG)
+      if (this.highlight[this.questionIndex][this.fieldIndex]) {
+        if (!this.validity[this.questionIndex][this.fieldIndex]) {
+          classes.push(CSS_CLASS_WRONG)
+        } else {
+          classes.push(CSS_CLASS_CORRECT)
+        }
       }
 
       return classes
@@ -164,6 +171,9 @@ export default {
         position: absolute;
         &.wrong {
           background-color: $danger-clr;
+        }
+        &.correct {
+          background-color: $correct-clr;
         }
       }
     }

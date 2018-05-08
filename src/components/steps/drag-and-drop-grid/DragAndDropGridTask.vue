@@ -19,8 +19,8 @@ import $ from 'jquery'
 require('webpack-jquery-ui/draggable')
 require('webpack-jquery-ui/droppable')
 
-window.jQuery = $;
-require('jquery-ui-touch-punch');
+window.jQuery = $
+require('jquery-ui-touch-punch')
 
 const $labelWrapper = index =>
   $(`.label-wrapper[data-index=${index}]`)
