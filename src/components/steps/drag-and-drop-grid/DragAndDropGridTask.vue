@@ -15,123 +15,49 @@
 
 <script>
 import Content from '@/locale/ru-ru'
-import $ from 'jquery'
-require('webpack-jquery-ui/draggable')
-require('webpack-jquery-ui/droppable')
-
-window.jQuery = $
-require('jquery-ui-touch-punch')
-
-const $labelWrapper = index =>
-  $(`.label-wrapper[data-index=${index}]`)
-
-// const $label = i =>
-//   $(`.label[data-index=${i}`)
-//
-// const $trap = (row, column) =>
-//   $(`.trap[data-row=${row}][data-column=${column}`)
-
-const $createLabel = (html, index) =>
-  $(`<div class='label' data-index='${index}'>${html}</div>`)
-
-const placeLabel = ($label, index) =>
-  $labelWrapper(index).append($label)
-
-const trapLabel = ($trap, $label) => {
-  $label.removeAttr('style').draggable({
-    helper: 'clone',
-    revert: 'invalid',
-    start: ev => $(ev.target).hide(),
-    stop: ev => $(ev.target).show()
-  })
-  $trap.append($label)
-}
-
-const isTrap = $el => $el.hasClass('trap')
-
-const getRowAndColumn = ($trap) => {
-  return {
-    row: $trap.data('row'),
-    column: $trap.data('column')
-  }
-}
+import { TRAPPED_LABEL_INDEXES_GRID, resetDnD, initDnD, setValidity } from './drag-and-drop'
 
 export default {
   name: 'DragAndDropGridTask',
   data () {
     return {
       stepIndex: 1,
-      content: Content.steps.data[1],
-      traps: Array.from(Array(6), () => Array(6).fill(-1))
+      content: Content.steps.data[1]
     }
   },
   props: {
     eventBus: { type: Object, required: true }
   },
   methods: {
-    onReset (stepIndex) {
+    onReset (stepIndex, isFull) {
       if (stepIndex !== this.stepIndex) return
-      this.traps = Array.from(Array(6), () => Array(6).fill(-1))
+      if (isFull) {
+        resetDnD()
+        initDnD(this.content)
+      }
     },
     onValidate (stepIndex) {
-      if (stepIndex !== this.stepIndex) return
+      if (stepIndex !== this.stepIndex) { return }
+
+      let traps = TRAPPED_LABEL_INDEXES_GRID
       let correct = this.content.correct
+      let isValid = true
+      let validity = false
 
       for (let i = 0; i < correct.length; i++) {
         for (let j = 0; j < correct[i].length; j++) {
-          if (this.traps[i][j] !== correct[i][j]) {
-            this.eventBus.$emit('validation-fail')
-            return
+          validity = traps[i][j] === correct[i][j]
+          if (traps[i][j] !== -1) {
+            setValidity(i, j, validity)
+          }
+
+          if (traps[i][j] !== correct[i][j]) {
+            isValid = false
           }
         }
       }
 
-      this.eventBus.$emit('validation-pass')
-    },
-    setTrapValue (row, column, value) {
-      this.$set(this.traps[row], column, value)
-    },
-    removeLabels () {
-      $('.label-wrapper').empty()
-    },
-    removeTrappedLabels () {
-      $('.trap').empty()
-    },
-    enableTraps () {
-      $('.trap').droppable({
-        tolerance: 'pointer',
-        drop: (ev, ui) => {
-          let $label = ui.draggable
-          let $oldPlace = $label.parent()
-          let $newPlace = $(ev.target)
-          let labelIndex = $label.data('index')
-          let newPos = getRowAndColumn($newPlace)
-
-          if (isTrap($oldPlace)) {
-            let oldPos = getRowAndColumn($oldPlace)
-            this.setTrapValue(oldPos.row, oldPos.column, -1)
-            $newPlace.empty()
-          } else {
-            $label = $label.clone()
-          }
-
-          this.setTrapValue(newPos.row, newPos.column, labelIndex)
-          trapLabel($newPlace, $label)
-        }
-      })
-    },
-    enableLabels () {
-      $('.label').draggable({
-        helper: 'clone',
-        revert: 'invalid'
-      })
-    },
-    enableDragAndDrop () {
-      this.enableTraps()
-      this.enableLabels()
-    },
-    createLabels () {
-      this.content.labels.forEach((html, index) => placeLabel($createLabel(html, index), index))
+      this.eventBus.$emit(isValid ? 'validation-pass' : 'validation-fail')
     },
     handleEvents () {
       this.eventBus.$on('validate', this.onValidate)
@@ -139,10 +65,8 @@ export default {
     }
   },
   mounted () {
-    window.$ = $
-    this.createLabels()
-    this.enableDragAndDrop()
     this.handleEvents()
+    initDnD(this.content)
   }
 }
 </script>
@@ -166,6 +90,9 @@ export default {
   }
   &:hover {
     border-bottom-color: $warning-clr
+  }
+  &.correct {
+    border-bottom-color: $label-correct-outline-clr;
   }
   &.wrong {
     border-bottom-color: $danger-clr;
