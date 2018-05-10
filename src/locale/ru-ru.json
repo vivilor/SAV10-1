@@ -7,6 +7,10 @@
     ]
   } ,
   "buttons": {
+    "ok": {
+      "text": "Oк",
+      "flexible": true
+    },
     "yes": {
       "text": "Да",
       "flexible": true
@@ -41,8 +45,8 @@
       "buttons": ["continue"]
     },
     "tipRequested": {
-      "message": "Помните, что движения выполняются справа налево",
-      "closable": true
+      "message": "Помните, что движения<br>выполняются справа налево",
+      "buttons": ["ok"]
     },
     "finalReached": {
       "message": "Все правильно!",

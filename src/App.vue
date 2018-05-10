@@ -12,11 +12,9 @@
         :is="currentStepComponentName"
         :event-bus="eventBus"
       )
-    .buttons(
-      v-if="currentStepButtonTypes"
-      v-for="(buttonType, i) in currentStepButtonTypes", :key="i"
-    )
+    .buttons(v-if="currentStepButtonTypes")
       TextButton(
+        v-for="(buttonType, i) in currentStepButtonTypes", :key="i"
         :name="buttonType",
         :content="button(buttonType)",
         @click.native="onStepButtonClick(buttonType)"

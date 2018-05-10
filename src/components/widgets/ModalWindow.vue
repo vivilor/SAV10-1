@@ -3,33 +3,41 @@ transition(name="modal-window")
   .ModalWindow(v-if="content", v-show="visible")
     .overlay(@click="onOverlayClick")
       .window
-        .text
-          h3.header(v-if="header" v-html="header")
-          .message(v-if="message" v-html="message")
-        .buttons(v-if="buttonTypes")
-          TextButton(v-for="(buttonType, i) in buttonTypes", :key="i",
-            :name="buttonType"
-            :content="button(buttonType)",
-            @click.native="onButtonClick(buttonType)"
-          )
+        .header
+        .body
+          .text
+            h3.header(v-if="header" v-html="header")
+            .message(v-if="message" v-html="message")
+          .buttons(v-if="buttonTypes")
+            TextButton(v-for="(buttonType, i) in buttonTypes", :key="i",
+              :name="buttonType"
+              :content="button(buttonType)",
+              @click.native="onButtonClick(buttonType)"
+            )
+        .footer
+          TipImage(v-if="currentType === 'tipRequested'")
+
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex'
 
 import TextButton from '@/components/widgets/TextButton'
+import TipImage from '@/components/static/TipImage'
 
 const ModuleName = 'modalWindow'
 
 export default {
   name: 'ModalWindow',
   components: {
-    TextButton
+    TextButton,
+    TipImage
   },
   computed: {
     ...mapState(ModuleName, [
       'visible',
-      'content'
+      'content',
+      'currentType'
     ]),
     ...mapGetters(ModuleName, [
       'closable',
@@ -116,33 +124,43 @@ export default {
       // Inner blocks positioning
       display: flex;
       align-items: center;
-      flex-direction: row;
-      justify-content: space-between;
+      flex-direction: column;
       // Background
       background: #f5f4ef;
       & > {
-        .text {
-          flex: auto;
+        .body {
           display: flex;
-          min-width: 300px;
-          flex-direction: column;
+          align-items: center;
+          flex-direction: row;
+          justify-content: space-between;
           & > {
-            h3.header {
-              margin: 0 0 10px 0;
-              @include headerText;
-              color: $correct-text-clr;
+            .text {
+              flex: auto;
+              display: flex;
+              min-width: 300px;
+              flex-direction: column;
+              & > {
+                h3.header {
+                  margin: 0 0 10px 0;
+                  @include headerText;
+                  color: $correct-text-clr;
+                }
+                .message {
+                  @include normalText;
+                  color: $text-clr;
+                }
+              }
             }
-            .message {
-              @include normalText;
-              color: $text-clr;
+            .buttons {
+              flex: initial;
+              & > *:not(:first-child){
+                margin-left: 10px;
+              }
             }
           }
         }
-        .buttons {
-          flex: initial;
-          & > *:not(:first-child){
-            margin-left: 10px;
-          }
+        .footer > .TipImage {
+          padding: 10px 0;
         }
       }
     }
