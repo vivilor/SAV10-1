@@ -1,4 +1,4 @@
-const DEFAULT_START_STEP = 0
+const DEFAULT_START_STEP = 1
 
 export default (content, stepNames) => {
   if (!content.steps || !content.steps.data || !content.steps.data.length) return {}

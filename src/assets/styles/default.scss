@@ -6,6 +6,13 @@
 
 // Indentation of workfield
 
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 $workfield-width: 960px;
 $workfield-height: 600px;
 

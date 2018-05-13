@@ -16,6 +16,9 @@
 <script>
 import Content from '@/locale/ru-ru'
 import { TRAPPED_LABEL_INDEXES_GRID, resetDnD, initDnD, setValidity } from './drag-and-drop'
+import $ from 'jquery'
+
+window.$ = $
 
 export default {
   name: 'DragAndDropGridTask',
@@ -75,16 +78,17 @@ export default {
 @import "~@/assets/styles/default";
 
 .label {
-  text-align: center;
   color: $main-clr;
+  width: 70px;
+  height: 25px;
   cursor: pointer;
   @include normalText;
   background: white;
-  border-radius: 2px;
+  text-align: center;
   box-shadow: 0px 0px 3px rgba(0,0,0,0.2);
-  width: 70px;
-  height: 25px;
+  border-radius: 2px;
   border-bottom: 2px solid;
+
   &:not(:hover) {
     border-bottom-color: $main-clr
   }

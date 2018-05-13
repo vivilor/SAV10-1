@@ -9,15 +9,24 @@ require('jquery-ui-touch-punch')
 /**
  * CSS classes for validation state of label
  */
-const CSS_CLASS_WRONG = 'wrong'
-const CSS_CLASS_CORRECT = 'correct'
 
-const trapSelector = '.trap'
-const labelSelector = '.label'
+const CSSClasses = {
+  wrong: 'wrong',
+  correct: 'correct'
+}
+
+const Selectors = {
+  stepWrapper: '.step-wrapper',
+  trap: '.trap',
+  label: '.label'
+}
+
+export let TRAPPED_LABEL_INDEXES_GRID
 
 const DROPPABLE_TRAP_CONF = {
   tolerance: 'pointer',
   drop: (ev, ui) => {
+    console.log('drop()')
     let $label = ui.draggable
     let $oldPlace = $label.parent()
     let $newPlace = $(ev.target)
@@ -29,7 +38,9 @@ const DROPPABLE_TRAP_CONF = {
 
       unsetValidity($label)
       resetTrapValue(oldPos.row, oldPos.column)
-      $newPlace.empty()
+      if (newPos.row !== oldPos.row && newPos.column !== oldPos.column) {
+        $newPlace.empty()
+      }
     } else {
       $label = $label.clone()
     }
@@ -39,29 +50,21 @@ const DROPPABLE_TRAP_CONF = {
   }
 }
 const DRAGGABLE_LABEL_CONF = {
+  appendTo: Selectors.stepWrapper,
   helper: 'clone',
   revert: 'invalid'
 }
-const TRAPPED_DRAGGABLE_LABEL_CONF = {
-  helper: 'clone',
-  revertDuration: 0,
-  revert (isDroppable) {
-    if (!isDroppable) {
-      $(this).remove()
-    }
 
-    return !isDroppable
-  },
-  start (ev) {
-    $(ev.target).hide()
-  },
-  stop (ev) {
-    unsetValidity(this)
-    $(ev.target).show()
+
+const TRAPPED_DRAGGABLE_LABEL_CONF = {
+  appendTo: Selectors.stepWrapper,
+  helper: 'original',
+  revertDuration: 0,
+  revert: 'false',
+  stop () {
+    $(this).draggable(TRAPPED_DRAGGABLE_LABEL_CONF)
   }
 }
-
-export let TRAPPED_LABEL_INDEXES_GRID
 
 const createTrappedLabelIndexesGrid = content => {
   TRAPPED_LABEL_INDEXES_GRID = Array.from(content, row => Array.from(row, cell => -1))
@@ -79,7 +82,7 @@ const $trappedLabel = (row, column) => $trap(row, column).find('div.label')
 
 const createLabels = labels => labels.forEach((html, index) => placeLabel($createLabel(html, index), index))
 const removeLabels = () => $('.label-wrapper').empty()
-const removeTrappedLabels = () => $(trapSelector).empty()
+const removeTrappedLabels = () => $(Selectors.trap).empty()
 
 const resetTrapValue = (i, j, value = -1) => TRAPPED_LABEL_INDEXES_GRID[i][j] = value
 
@@ -95,13 +98,17 @@ const isTrap = $el => $el.hasClass('trap')
 const setTrapped = $label => $label.attr('data-trapped', '')
 // const setFree = $label => $label.removeAttr('data-trapped')
 
-export const setValidity = (i, j, isValid) => $trappedLabel(i, j).addClass(isValid ? CSS_CLASS_CORRECT : CSS_CLASS_WRONG)
-export const unsetValidity = label => $(label).removeClass([CSS_CLASS_WRONG, CSS_CLASS_CORRECT].join(' '))
+// const isDraggable = el => $(el).data('uiDraggable') !== undefined
+
+export const setValidity = (i, j, isValid) => $trappedLabel(i, j).addClass(isValid ? CSSClasses.correct : CSSClasses.wrong)
+export const unsetValidity = label => $(label).removeClass([CSSClasses.wrong, CSSClasses.correct].join(' '))
 
 const placeLabel = ($label, index) => $labelWrapper(index).append($label)
 const trapLabel = ($trap, $label) => {
-  $label.removeAttr('style').draggable(TRAPPED_DRAGGABLE_LABEL_CONF)
+  $label.css({top: 0, left: 0})
+
   $trap.append($label)
+  $label.draggable(TRAPPED_DRAGGABLE_LABEL_CONF)
   setTrapped($label)
 }
 
@@ -117,8 +124,8 @@ const getRowAndColumn = $trap => {
   }
 }
 
-const enableLabels = () => $(labelSelector).draggable(DRAGGABLE_LABEL_CONF)
-const enableTraps = () => $(trapSelector).droppable(DROPPABLE_TRAP_CONF)
+const enableLabels = () => $(Selectors.label).draggable(DRAGGABLE_LABEL_CONF)
+const enableTraps = () => $(Selectors.trap).droppable(DROPPABLE_TRAP_CONF)
 
 export const initDnD = content => {
   let labels = content.labels
