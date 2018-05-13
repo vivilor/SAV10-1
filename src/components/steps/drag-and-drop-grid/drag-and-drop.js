@@ -55,7 +55,6 @@ const DRAGGABLE_LABEL_CONF = {
   revert: 'invalid'
 }
 
-
 const TRAPPED_DRAGGABLE_LABEL_CONF = {
   appendTo: Selectors.stepWrapper,
   helper: 'original',
@@ -96,9 +95,6 @@ const isTrap = $el => $el.hasClass('trap')
  * Lambdas for DOM-mutations (NativeJS & jQuery)
  */
 const setTrapped = $label => $label.attr('data-trapped', '')
-// const setFree = $label => $label.removeAttr('data-trapped')
-
-// const isDraggable = el => $(el).data('uiDraggable') !== undefined
 
 export const setValidity = (i, j, isValid) => $trappedLabel(i, j).addClass(isValid ? CSSClasses.correct : CSSClasses.wrong)
 export const unsetValidity = label => $(label).removeClass([CSSClasses.wrong, CSSClasses.correct].join(' '))
@@ -106,7 +102,6 @@ export const unsetValidity = label => $(label).removeClass([CSSClasses.wrong, CS
 const placeLabel = ($label, index) => $labelWrapper(index).append($label)
 const trapLabel = ($trap, $label) => {
   $label.css({top: 0, left: 0})
-
   $trap.append($label)
   $label.draggable(TRAPPED_DRAGGABLE_LABEL_CONF)
   setTrapped($label)
