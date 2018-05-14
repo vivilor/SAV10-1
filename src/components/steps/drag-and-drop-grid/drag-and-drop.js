@@ -59,7 +59,12 @@ const TRAPPED_DRAGGABLE_LABEL_CONF = {
   appendTo: Selectors.stepWrapper,
   helper: 'original',
   revertDuration: 0,
-  revert: 'false',
+  revert (isDroppable) {
+    if (!isDroppable) {
+      $(this).remove()
+    }
+    return false
+  },
   stop () {
     $(this).draggable(TRAPPED_DRAGGABLE_LABEL_CONF)
   }
