@@ -1,6 +1,5 @@
 .DS_Store
 node_modules/
-/dist/
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
