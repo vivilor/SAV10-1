@@ -11,6 +11,7 @@
       td.row-name(v-html="label")
       td.cell(v-for="(label, j) in content.labels")
         .trap(:data-row="i", :data-column="j")
+  <!--button(@click="debug__fillGrid") "help"-->
 </template>
 
 <script>
@@ -32,6 +33,9 @@ export default {
     eventBus: { type: Object, required: true }
   },
   methods: {
+    // debug__fillGrid () {
+    //   resetGrid(this.content.correct)
+    // },
     onReset (stepIndex, isFull) {
       if (stepIndex !== this.stepIndex) return
       if (isFull) {

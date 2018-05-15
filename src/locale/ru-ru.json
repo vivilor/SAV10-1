@@ -37,7 +37,7 @@
       "buttons": ["yes", "no"]
     },
     "validationPassed": {
-      "message": "Все правильно",
+      "message": "Все правильно.",
       "buttons": ["continue"]
     },
     "validationFailed": {
@@ -49,7 +49,7 @@
       "buttons": ["ok"]
     },
     "finalReached": {
-      "message": "Все правильно!",
+      "message": "<div style='text-align: center'>Все правильно!</div>",
       "closable": true
     }
   },

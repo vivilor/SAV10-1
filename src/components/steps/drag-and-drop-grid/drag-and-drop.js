@@ -21,7 +21,14 @@ const Selectors = {
   label: '.label'
 }
 
+const Styles = {
+  draggedLabel: {
+    zIndex: 1000
+  }
+}
 export let TRAPPED_LABEL_INDEXES_GRID
+
+// export const resetGrid = newGrid => TRAPPED_LABEL_INDEXES_GRID = newGrid
 
 const DROPPABLE_TRAP_CONF = {
   tolerance: 'pointer',
@@ -38,11 +45,16 @@ const DROPPABLE_TRAP_CONF = {
 
       unsetValidity($label)
       resetTrapValue(oldPos.row, oldPos.column)
-      if (newPos.row !== oldPos.row && newPos.column !== oldPos.column) {
+
+      if (!isSameTrap(newPos, oldPos)) {
         $newPlace.empty()
       }
     } else {
       $label = $label.clone()
+
+      if (hasChildren($newPlace)) {
+        $newPlace.empty()
+      }
     }
 
     resetTrapValue(newPos.row, newPos.column, labelIndex)
@@ -52,13 +64,15 @@ const DROPPABLE_TRAP_CONF = {
 const DRAGGABLE_LABEL_CONF = {
   appendTo: Selectors.stepWrapper,
   helper: 'clone',
-  revert: 'invalid'
+  revert: 'invalid',
+  zIndex: Styles.draggedLabel.zIndex
 }
 
 const TRAPPED_DRAGGABLE_LABEL_CONF = {
   appendTo: Selectors.stepWrapper,
   helper: 'original',
   revertDuration: 0,
+  zIndex: Styles.draggedLabel.zIndex,
   revert (isDroppable) {
     if (!isDroppable) {
       $(this).remove()
@@ -78,6 +92,7 @@ const createTrappedLabelIndexesGrid = content => {
 /**
  * Lambda-getters of DOM-elements (NativeJS & jQuery)
  */
+
 // const $label = i => $(`.label[data-index=${i}]`)
 const $labelWrapper = index => $(`.label-wrapper[data-index=${index}]`)
 const $trap = (row, column) => $(`.trap[data-row=${row}][data-column=${column}]`)
@@ -94,6 +109,8 @@ const resetTrapValue = (i, j, value = -1) => TRAPPED_LABEL_INDEXES_GRID[i][j] = 
  * Lambdas for bool checks
  */
 const isTrap = $el => $el.hasClass('trap')
+const hasChildren = $el => $el.children().length
+const isSameTrap = (posA, posB) => posA.row === posB.row && posA.column === posB.column
 // const isTrapped = $label => $label[0].hasAttribute('data-trapped')
 
 /**
