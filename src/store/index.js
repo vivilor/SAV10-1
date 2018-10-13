@@ -1,20 +1,15 @@
 import Vuex from 'vuex'
 
-import State from './state'
-import * as getters from './getters'
-import * as mutations from './mutations'
-
-import ModalWindow from './modules/modal-window'
-import FillFields from './modules/fill-fields'
+import RootModule from './root'
+import ModalWindowModule from './modules/modal-window'
+import FillFieldsModule from './modules/fill-fields'
 
 export default (content, stepNames) => {
   return new Vuex.Store({
-    state: State(content, stepNames),
-    getters,
-    mutations,
+    ...RootModule(content, stepNames),
     modules: {
-      modalWindow: ModalWindow(content.modalWindows),
-      fillFields: FillFields
+      modalWindow: ModalWindowModule(content.modalWindows),
+      fillFields: FillFieldsModule
     }
   })
 }

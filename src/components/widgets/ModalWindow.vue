@@ -25,7 +25,7 @@ import { mapState, mapGetters, mapMutations } from 'vuex'
 import TextButton from '@/components/widgets/TextButton'
 import TipImage from '@/components/static/TipImage'
 
-const ModuleName = 'modalWindow'
+const MODAL_WINDOW_MODULE_NAME = 'modalWindow'
 
 export default {
   name: 'ModalWindow',
@@ -34,12 +34,12 @@ export default {
     TipImage
   },
   computed: {
-    ...mapState(ModuleName, [
+    ...mapState(MODAL_WINDOW_MODULE_NAME, [
       'visible',
       'content',
       'currentType'
     ]),
-    ...mapGetters(ModuleName, [
+    ...mapGetters(MODAL_WINDOW_MODULE_NAME, [
       'closable',
       'header',
       'message',
@@ -50,7 +50,11 @@ export default {
     ])
   },
   methods: {
-    ...mapMutations(ModuleName, {
+    ...mapMutations([
+      'CHANGE_STEP',
+      'INCREASE_STEP'
+    ]),
+    ...mapMutations(MODAL_WINDOW_MODULE_NAME, {
       show: 'SHOW',
       hide: 'HIDE',
       setType: 'SET_TYPE'
@@ -60,9 +64,29 @@ export default {
         this.hide()
       }
     },
+    resetStep ({full} = {full: true}) {
+      this.eventBus.$emit('reset', this.currentStep, full)
+    },
     onButtonClick (buttonName) {
-      this.$emit('button-click', buttonName)
-      this.hide()
+      switch (this.currentType) {
+        case 'restartRequested':
+          switch (buttonName) {
+            case 'yes':
+              this.CHANGE_STEP(0)
+              this.resetStep()
+              break
+            default:
+              break
+          }
+          break
+        case 'validationPassed':
+          this.INCREASE_STEP()
+          this.resetStep()
+          break
+        case 'validationFailed':
+          this.resetStep({full: false})
+          break
+      }
     }
   }
 }

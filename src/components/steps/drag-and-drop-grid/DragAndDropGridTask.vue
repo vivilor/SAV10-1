@@ -1,21 +1,28 @@
-<template lang="pug">
-.DragAndDropGridTask
-  .labels
-    .label-wrapper(v-for="(label, i) in content.labels", :data-index="i")
-  .tip(v-html="content.tip")
-  table.traps-wrapper
-    tr
-      th.empty
-      th.column-name(v-for="label in content.labels", v-html="label")
-    tr(v-for="(label, i) in content.labels")
-      td.row-name(v-html="label")
-      td.cell(v-for="(label, j) in content.labels")
-        .trap(:data-row="i", :data-column="j")
-  <!--button(@click="debug__fillGrid") "help"-->
+<template>
+  <div class="DragAndDropGridTask">
+    <div class="labels">
+      <div v-for="(label, i) in content.labels" :data-index="i" class="label-wrapper"></div>
+    </div>
+    <div v-html="content.tip" class="tip"></div>
+    <table class="traps-wrapper">
+      <tr>
+        <th class="empty"></th>
+        <th v-for="label in content.labels" v-html="label" class="column-name"></th>
+      </tr>
+      <tr v-for="(label, i) in content.labels">
+        <td v-html="label" class="row-name"></td>
+        <td v-for="(label, j) in content.labels" class="cell">
+          <div :data-row="i" :data-column="j" class="trap"></div>
+        </td>
+      </tr>
+    </table>
+    <!--button(@click="debug__fillGrid") "help"-->
+  </div>
 </template>
 
 <script>
 import Content from '@/locale/ru-ru'
+import { mapState } from 'vuex'
 import { TRAPPED_LABEL_INDEXES_GRID, resetDnD, initDnD, setValidity } from './drag-and-drop'
 import $ from 'jquery'
 
@@ -29,15 +36,16 @@ export default {
       content: Content.steps.data[1]
     }
   },
-  props: {
-    eventBus: { type: Object, required: true }
+  computed: {
+    ...mapState(['eventBus'])
   },
   methods: {
     // debug__fillGrid () {
     //   resetGrid(this.content.correct)
     // },
     onReset (stepIndex, isFull) {
-      if (stepIndex !== this.stepIndex) return
+      if (stepIndex !== this.stepIndex) { return }
+
       if (isFull) {
         resetDnD()
         initDnD(this.content)

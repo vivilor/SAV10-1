@@ -1,16 +1,22 @@
-<template lang="pug">
-.RestartButton(
-  @mouseenter="hover = true"
-  @mouseleave="hover = false"
-  @click="$emit('restart-request')"
-)
-  transition(name='hover' mode='in-out')
-    component(:is="hover ? 'Hover' : 'Normal'")
+<template>
+  <div
+    class="RestartButton"
+    @mouseenter="hover = true"
+    @mouseleave="hover = false"
+    @click="setAndShowModal('restartRequest')"
+  >
+    <transition name="hover" mode="in-out">
+      <component :is="hover ? 'Hover' : 'Normal'"/>
+    </transition>
+  </div>
 </template>
 
 <script>
 import Hover from './Hover'
 import Normal from './Normal'
+
+import { mapActions } from 'vuex'
+
 export default {
   name: 'RestartButton',
   components: {
@@ -20,6 +26,11 @@ export default {
     return {
       hover: false
     }
+  },
+  methods: {
+    ...mapActions('modalWindow', [
+      'setAndShowModal'
+    ])
   }
 }
 </script>
