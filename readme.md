@@ -1,4 +1,4 @@
 ##SAV10-1
 Задача по математике (Савватеев)
 
-[Песочница (Виктор)](http://childrenscience.ru/sandbox/viktor/SAV10-1/)
+Результат (prod) http://childrenscience.ru/courses/#filter%3A%22sav_10%22
